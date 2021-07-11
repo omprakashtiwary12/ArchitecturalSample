@@ -31,6 +31,7 @@ class QuestionDetailViewMvc(
                 listener.onBackClicked()
             }
         }
+
         // init pull-down-to-refresh (used as a progress indicator)
         swipeRefresh = findViewById(R.id.swipeRefresh)
         swipeRefresh.isEnabled = false

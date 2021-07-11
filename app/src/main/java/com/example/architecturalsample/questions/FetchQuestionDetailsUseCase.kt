@@ -1,14 +1,11 @@
 package com.example.architecturalsample.questions
 
-import com.example.architecturalsample.Constants
 import com.example.architecturalsample.networking.StackoverflowApi
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
-class FetchQuestionDetailsUseCase {
+class FetchQuestionDetailsUseCase(private val stackoverflowApi: StackoverflowApi) {
 
     sealed class Result {
         class Success(val question: String) : Result()
@@ -16,11 +13,8 @@ class FetchQuestionDetailsUseCase {
     }
 
     // init retrofit
-    private val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl(Constants.BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-   private val stackoverflowApi = retrofit.create(StackoverflowApi::class.java)
+
+
 
    suspend fun fetchLatestQuestionDetail(questionId: String): Result {
        return withContext(Dispatchers.IO){

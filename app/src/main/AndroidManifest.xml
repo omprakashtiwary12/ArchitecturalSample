@@ -6,10 +6,9 @@
 
     <application
         android:name=".MyApplication"
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/injection"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/injection"
         android:supportsRtl="true"
         android:theme="@style/Theme.ArchitecturalSample">
         <activity android:name=".screens.questiondetails.QuestionDetailsActivity" />

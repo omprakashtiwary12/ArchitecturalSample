@@ -1,7 +1,6 @@
 package com.example.architecturalsample.screens.common.toolbar
 
 import android.content.Context
-import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -15,9 +14,7 @@ import com.example.architecturalsample.R
 
 class MyToolbar : Toolbar {
     private var centeredTitleTextView: TextView? = null
-    interface NavigateUpListener {
-        fun onNavigationUpClicked()
-    }
+
     private var navigateUpListener: () -> Unit = {}
 
     private lateinit var navigateUp: FrameLayout
@@ -39,14 +36,14 @@ class MyToolbar : Toolbar {
         title = s
     }
     override fun setTitle(title: CharSequence?) {
-        getCenteredTitleTextView().setText(title)
+        getCenteredTitleTextView().text = title
     }
 
     private fun getCenteredTitleTextView(): TextView {
         if (centeredTitleTextView == null){
             centeredTitleTextView = TextView(context)
             centeredTitleTextView!!.gravity = Gravity.CENTER
-            val layoutParams = Toolbar.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT)
+            val layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT)
             layoutParams.gravity = Gravity.CENTER
             centeredTitleTextView!!.layoutParams = layoutParams
             addView(centeredTitleTextView)
@@ -55,11 +52,8 @@ class MyToolbar : Toolbar {
     }
 
 
-    override fun getTitle(): CharSequence? {
-        return getCenteredTitleTextView().getText().toString()
-    }
-    fun setTypeface(font: Typeface?) {
-        getCenteredTitleTextView().setTypeface(font)
+    override fun getTitle(): CharSequence {
+        return getCenteredTitleTextView().text.toString()
     }
 
     private fun init(context: Context) {

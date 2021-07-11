@@ -4,15 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.appcompat.app.AppCompatActivity
 import com.example.architecturalsample.questions.FetchQuestionDetailsUseCase
 import com.example.architecturalsample.questions.FetchQuestionDetailsUseCase.Result.Success
 import com.example.architecturalsample.screens.common.ScreensNavigator
+import com.example.architecturalsample.screens.common.activities.BaseActivity
 import com.example.architecturalsample.screens.common.dialogs.DialogsNavigator
-import com.example.architecturalsample.screens.common.dialogs.ServerErrorDialogFragment
 import kotlinx.coroutines.*
 
-class QuestionDetailsActivity : AppCompatActivity(), QuestionDetailViewMvc.Listener {
+class QuestionDetailsActivity : BaseActivity(), QuestionDetailViewMvc.Listener {
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     private lateinit var fetchQuestionDetailsUseCase: FetchQuestionDetailsUseCase
     private lateinit var questionId: String
@@ -25,13 +24,13 @@ class QuestionDetailsActivity : AppCompatActivity(), QuestionDetailViewMvc.Liste
 
         viewMvc = QuestionDetailViewMvc(LayoutInflater.from(this),null)
         setContentView(viewMvc.rootView)
-        fetchQuestionDetailsUseCase = FetchQuestionDetailsUseCase()
+        fetchQuestionDetailsUseCase = compositionRoot.fetchQuestionDetailsUseCase
 
         // retrieve question ID passed from outside
         questionId = intent.extras!!.getString(EXTRA_QUESTION_ID)!!
 
-        dialogsNavigator = DialogsNavigator(supportFragmentManager)
-        screensNavigator = ScreensNavigator(this)
+        dialogsNavigator = compositionRoot.dialogsNavigator
+        screensNavigator = compositionRoot.screensNavigator
     }
 
     override fun onStart() {
@@ -81,6 +80,4 @@ class QuestionDetailsActivity : AppCompatActivity(), QuestionDetailViewMvc.Liste
     override fun onBackClicked() {
         screensNavigator.navigateBack()
     }
-
-
 }
