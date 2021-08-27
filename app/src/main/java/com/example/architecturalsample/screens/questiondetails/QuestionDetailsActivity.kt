@@ -22,7 +22,7 @@ class QuestionDetailsActivity : BaseActivity(), QuestionDetailViewMvc.Listener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewMvc = QuestionDetailViewMvc(LayoutInflater.from(this),null)
+        viewMvc = compositionRoot.viewMvcFactory.newQuestionsDetailViewMvc(null)
         setContentView(viewMvc.rootView)
         fetchQuestionDetailsUseCase = compositionRoot.fetchQuestionDetailsUseCase
 
@@ -50,12 +50,13 @@ class QuestionDetailsActivity : BaseActivity(), QuestionDetailViewMvc.Listener {
         coroutineScope.launch {
             viewMvc.showProgressIndication()
             try {
-                when(val result = fetchQuestionDetailsUseCase.fetchLatestQuestionDetail(questionId)){
+                when (val result =
+                    fetchQuestionDetailsUseCase.fetchLatestQuestionDetail(questionId)) {
                     is Success -> {
                         viewMvc.bindQuestionBody(result.question)
 
                     }
-                    is FetchQuestionDetailsUseCase.Result.Failure ->  onFetchFailed()
+                    is FetchQuestionDetailsUseCase.Result.Failure -> onFetchFailed()
                 }
             } finally {
                 viewMvc.hideProgressIndication()

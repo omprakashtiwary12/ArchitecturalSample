@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import com.example.architecturalsample.questions.FetchQuestionsUseCase
 import com.example.architecturalsample.questions.Question
 import com.example.architecturalsample.screens.common.ScreensNavigator
-import com.example.architecturalsample.screens.common.activities.BaseActivity
 import com.example.architecturalsample.screens.common.dialogs.DialogsNavigator
 import com.example.architecturalsample.screens.common.fragments.BaseFragment
 import kotlinx.coroutines.*
@@ -29,8 +28,12 @@ class QuestionsListFragment : BaseFragment(), QuestionsListViewMvc.Listener {
 
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        viewMvc = QuestionsListViewMvc(LayoutInflater.from(requireContext()), container)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        viewMvc = compositionRoot.viewMvcFactory.newQuestionsListViewMvc(container)
         return viewMvc.rootView
 
     }
@@ -56,6 +59,7 @@ class QuestionsListFragment : BaseFragment(), QuestionsListViewMvc.Listener {
     override fun onQuestionClicked(clickedQuestion: Question) {
         screensNavigator.toQuestionDetails(clickedQuestion.id)
     }
+
 
     private fun fetchQuestions() {
         coroutineScope.launch {
